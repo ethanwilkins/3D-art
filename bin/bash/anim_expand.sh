@@ -2,10 +2,10 @@
 
 for (( frame_num=41; frame_num<=81; frame_num+=40 ))
 do
-  i=$((frame_num / 40))
-  cp -R birds_eye "birds_eye_$i"
+  folder_num=$((frame_num / 40))
 
-  cd "birds_eye_$i"
+  cp -R birds_eye "birds_eye_$folder_num"
+  cd "birds_eye_$folder_num"
 
   for frame in *.png; do
     new=$(printf "birds_eye%04d.png" "$frame_num")
