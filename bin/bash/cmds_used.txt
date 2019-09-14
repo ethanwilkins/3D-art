@@ -1,0 +1,39 @@
+# make video from image files
+
+ffmpeg -r 10 -i in%4d.png -pix_fmt yuv420p -r 10 out.mp4
+
+# make gif from image files
+
+convert -size 100x100 -delay 0 -loop 0 *.png out.gif
+
+# cut audio clip from audio file
+
+ffmpeg -i in.mp3 -ss 00:02:35.6 -to 00:02:42 -c copy out.mp3
+
+# combine video with audio
+
+ffmpeg -i in.mp4 -i in.mp3 -codec copy -shortest out.mp4
+
+# to reverse video
+
+ffmpeg -i in.mp4 -vf reverse out.mp4
+
+# to show video data
+
+ffprobe -select_streams v -show_streams in.mp4
+
+# to change pitch/speed
+
+ffmpeg -i <input> -af asetrate=44100*0.5,aresample=44100 <output>
+
+# crossfade
+
+ffmpeg -i 0.mp3 -i 1.mp3 -vn -filter_complex acrossfade=d=10:c1=tri:c2=tri out.wav
+
+# crossfade with multiple files
+
+ffmpeg -i 0.mp3 -i 1.mp3 -i 2.mp3 -i 3.mp3 -vn
+       -filter_complex "[0][1]acrossfade=d=10:c1=tri:c2=tri[a01];
+                        [a01][2]acrossfade=d=10:c1=tri:c2=tri[a02];
+                        [a02][3]acrossfade=d=10:c1=tri:c2=tri"
+       out.mp3
